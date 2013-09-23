@@ -1,13 +1,14 @@
-#include "a1.h"
+#include "tsp.h"
 /**
    TSP function implementation
- **/
+
 int TSP(void (*algm)(void))
 {
   int err = 0;
   (*algm)();
   return err;
 }
+**/
 
 int main(int argc, char* argv[]){
   /**
@@ -62,6 +63,36 @@ int main(int argc, char* argv[]){
   /**
      Load data into memory. \
    **/
+  std::stringstream ss;
+  char buff[BUFF_SIZE];  
+  City *cities;
+  unsigned int index = 0;
+
+  while(targetFile.getline(buff, BUFF_SIZE))
+    {
+      ss<<buff;
+      if(numCity == -1)
+	{
+	  ss >> numCity;
+	  cities = (City*)malloc(sizeof(City)*numCity);
+	}
+      else
+	{
+	  ss >> cities[index].label;
+	  ss >> cities[index].x;
+	  ss >> cities[index].y;
+	  ++index;
+	}
+      // reset stringstream
+      ss.str("");
+      ss.clear();
+    }
+  // test loading part out
+  fprintf(stdout, "numCity = %d\n", numCity);
+  for(int i=0; i<numCity; ++i)
+    {
+      fprintf(stdout, "%c %d %d \n", cities[i].label, cities[i].x, cities[i].y);
+    }
 
   /**
      Run algorithm. \
@@ -79,5 +110,6 @@ int main(int argc, char* argv[]){
       fprintf(stderr, "What in the world are you running?\n");
       exit(3);
     }
+
   return 0;
 }

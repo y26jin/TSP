@@ -6,7 +6,11 @@
 #define ERROR_ALGM -1
 #define ASTAR 1
 #define LOCALSEARCH 2
-int algm; // indicate which algorithm is running
+unsigned int algm; // indicate which algorithm is running
+unsigned int numCity = -1; // number of cities
+
+#define BUFF_SIZE 40 // buff for reading file line by line
+#define CITY_SIZE 26 // max number of cities
 
 // For herustic function
 #define Ax 0
@@ -44,4 +48,22 @@ extern void LocalSearch(){fprintf(stdout, "Local Search\n");}
 /**
    TSP API
  **/
-extern int TSP(void (*algm)(void));
+extern void TSP(void (*algm)(void))
+{
+  if(!(algm == &AStar || algm == &LocalSearch))
+    {
+      fprintf(stderr, "Algorithm not defined\n");
+    }
+  else (*algm)();
+}
+
+/**
+   City Structure
+ **/
+struct City
+{
+  char label; // which city is it? ABCDEFG?
+  unsigned int x; // x coordinate
+  unsigned int y; // y coordinate
+};
+
