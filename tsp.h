@@ -35,35 +35,36 @@ unsigned int numCity = -1; // number of cities
 
 #define F(x1, x2, y1, y2) G(x1, x2, y1, y2) + H(x2, y2)
 
-/**
-   A* Algorithm search function
- **/
-extern void AStar(){fprintf(stdout, "A* algm\n");}
+/**                                                                                                                                                                                
+   City Structure                                                                                                                                                                  
+**/
+struct City
+{
+  char label; // which city is it? ABCDEFG?                                                                                                                                        
+  unsigned int x; // x coordinate                                                                                                                                                  
+  unsigned int y; // y coordinate                                                                                                                                                  
+};
 
 /**
+   A* Algorithm
+ **/
+extern void AStar(City * city, char start, char end);
+
+/**   
    Local Search function
  **/
-extern void LocalSearch(){fprintf(stdout, "Local Search\n");}
+extern void LocalSearch(City * city, char start, char end);
+
 
 /**
    TSP API
  **/
-extern void TSP(void (*algm)(void))
+extern void TSP(void (*algm)(City *, char, char), City * city, char start, char end)
 {
   if(!(algm == &AStar || algm == &LocalSearch))
     {
       fprintf(stderr, "Algorithm not defined\n");
     }
-  else (*algm)();
+  else (*algm)(city, start, end);
 }
-
-/**
-   City Structure
- **/
-struct City
-{
-  char label; // which city is it? ABCDEFG?
-  unsigned int x; // x coordinate
-  unsigned int y; // y coordinate
-};
 

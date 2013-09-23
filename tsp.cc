@@ -1,14 +1,11 @@
 #include "tsp.h"
-/**
-   TSP function implementation
 
-int TSP(void (*algm)(void))
+void AStar(City * city, char start, char end)
 {
-  int err = 0;
-  (*algm)();
-  return err;
+  
 }
-**/
+
+void LocalSearch(City * city, char start, char end){}
 
 int main(int argc, char* argv[]){
   /**
@@ -16,9 +13,7 @@ int main(int argc, char* argv[]){
      1. Target file name \
      2. The algorithm \
    **/
-  fprintf(stdout, "A* algorithm for finding TSP\n");
-  fprintf(stdout, "Now pick the target data...\n");
-  
+  fprintf(stdout, "=========================\n");
   // concatenate target file name in trail to relative path
   char targetName[20] = "./problemA1/";
   strncat(targetName, argv[1], sizeof(targetName));
@@ -43,7 +38,7 @@ int main(int argc, char* argv[]){
       fprintf(stderr, "Target file does not exist. Check it once more!\n");
       exit(1);
     }
-  
+  fprintf(stdout, "=========================\n");
   /**
      Pick the algorithm \
    **/
@@ -94,16 +89,17 @@ int main(int argc, char* argv[]){
       fprintf(stdout, "%c %d %d \n", cities[i].label, cities[i].x, cities[i].y);
     }
 
+  fprintf(stdout, "========================\n");
   /**
      Run algorithm. \
    **/
   if(algm == ASTAR)
     {
-      TSP(AStar);
+      TSP(AStar, cities, 'A', 'A');
     }
   else if(algm == LOCALSEARCH)
     {
-      TSP(LocalSearch);
+      TSP(LocalSearch, cities, 'A', 'A');
     }
   else
     {
