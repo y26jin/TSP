@@ -18,14 +18,14 @@ void AStar(City * city, unsigned int length, char start, char end)
     {
       sumX = sumX + (city[i].x + city[i+1].x) * (city[i].x * city[i+1].y - city[i+1].x * city[i].y);
     }
-  sumX = sumX / (3*signedArea);
+  if(signedArea != 0)  sumX = sumX / (3*signedArea);
 
   // Cy
   for(int i=0;i<length-1;++i)
     {
       sumY = sumY + (city[i].y + city[i+1].y) * (city[i].x * city[i+1].y - city[i+1].x * city[i].y);
     }
-  sumY = sumY / (3*signedArea);
+  if(signedArea != 0) sumY = sumY / (3*signedArea);
   
   // update initH
   unsigned int j = 0;
