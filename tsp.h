@@ -16,23 +16,24 @@ unsigned int numCity = -1; // number of cities
 #define BUFF_SIZE 40 // buff for reading file line by line
 #define CITY_SIZE 26 // max number of cities
 
-// For herustic function
-#define Ax 0
-#define Ay 0
+/**
+   Center of gravity of all the points. For herustic function
+ **/
+#define Cx 0
+#define Cy 0
 
 
 /**
    Euclidean distance
  **/
 
-//#define G(x1, x2, y1, y2) sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2))
 #define G(x1, x2, y1, y2) ((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2))
 
 /**
    Herustic function
  **/
-
-#define H(x, y) G(Ax, x, Ay, y)
+unsigned int initH = 0;
+#define H(x, y) G(Cx, x, Cy, y) - initH
 
 /**
    Total cost function

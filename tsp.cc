@@ -2,6 +2,37 @@
 
 void AStar(City * city, unsigned int length, char start, char end)
 {
+  /**
+     Find the center of gravity of all the cities and update (Cx,Cy), initH
+   **/
+
+  unsigned int sumX = 0, sumY = 0, signedArea = 0;
+  // signed Area
+  for(int i=0;i<length-1;++i)
+    {
+      signedArea =  signedArea + (city[i].x * city[i+1].y - city[i+1].x * city[i].y);
+    }
+  
+  // Cx
+  for(int i=0;i<length-1;++i)
+    {
+      sumX = sumX + (city[i].x + city[i+1].x) * (city[i].x * city[i+1].y - city[i+1].x * city[i].y);
+    }
+  sumX = sumX / (3*signedArea);
+
+  // Cy
+  for(int i=0;i<length-1;++i)
+    {
+      sumY = sumY + (city[i].y + city[i+1].y) * (city[i].x * city[i+1].y - city[i+1].x * city[i].y);
+    }
+  sumY = sumY / (3*signedArea);
+  
+  // update initH
+  unsigned int j = 0;
+  while(j<length && city[j].label != start){++j;}
+
+  initH = G(Cx, city[j].x, Cy, city[j].y);
+  
   char current = start; // current step
   do
     {
