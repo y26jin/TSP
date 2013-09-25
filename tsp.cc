@@ -1,81 +1,64 @@
 #include "tsp.h"
 
+/**
+   A* Algorithm
+ **/
 void AStar(City * city, unsigned int length, char start, char end)
 {
-  /**
-     Find the center of gravity of all the cities and update (Cx,Cy), initH
-   **/
-
-  unsigned int sumX = 0, sumY = 0, signedArea = 0;
-  // signed Area
-  for(int i=0;i<length-1;++i)
-    {
-      signedArea =  signedArea + (city[i].x * city[i+1].y - city[i+1].x * city[i].y);
-    }
-  
-  // Cx
-  for(int i=0;i<length-1;++i)
-    {
-      sumX = sumX + (city[i].x + city[i+1].x) * (city[i].x * city[i+1].y - city[i+1].x * city[i].y);
-    }
-  if(signedArea != 0)  sumX = sumX / (3*signedArea);
-
-  // Cy
-  for(int i=0;i<length-1;++i)
-    {
-      sumY = sumY + (city[i].y + city[i+1].y) * (city[i].x * city[i+1].y - city[i+1].x * city[i].y);
-    }
-  if(signedArea != 0) sumY = sumY / (3*signedArea);
-  
-  // update initH
-  unsigned int j = 0;
-  while(j<length && city[j].label != start){++j;}
-
-  initH = G(Cx, city[j].x, Cy, city[j].y);
-  
   char current = start; // current step
-  unsigned int numVisit = 0;
+  unsigned int numVisit = 0, realCost = 0, funcCost = 0;
   unsigned int *neighbor = (unsigned int *)malloc(length * sizeof(unsigned int));
   for(int i=0;i<length;++i)
     {
-      if(i == current - 'A') neighbor[i] = 1;
+      if(i == current - start) neighbor[i] = 1;
       else neighbor[i] = 0;
-    }
 
+      fprintf(stdout, "%d ", neighbor[i]);
+    }
+  fprintf(stdout,"\n");
   fprintf(stdout, "%c ", start);
   while(numVisit < length)
     {
-      unsigned int i = 0, minF = -1, minNum = 0;
-      for(i=0; i< length; ++i)
+      unsigned int i = 0, minF = 65536, minNum = 0;
+      for(i=0;i<length; ++i)
 	{
 	  // possible nodes in between start and end
-	  if(neighbor[i] == 1)
+	  if(neighbor[i] == 1) continue;
+
+	  if(neighbor[i] == 0)
 	    {
-	      continue;
-	    }
-	  else if(neighbor[i] == 0)
-	    {
-	      unsigned int tempF = F(city[current - 'A'].x, city[i].x, city[current - 'A'].y, city[i].y);
-	      if(minF == -1)
+	      unsigned int tempF = F(city[current-start].x, city[current-start].y,
+				     city[i].x, city[i].y,
+				     city[end-start].x, city[end-start].y);
+	      fprintf(stdout, "currently working on %c = %d\n", i+start, tempF);
+	      if(minF > tempF)
 		{
 		  minF = tempF;
 		  minNum = i;
 		}
-	      else
-		{
-		  if(minF > tempF)
-		    {
-		      minF = tempF;
-		      minNum = i;
-		    }
-		}
 	    }
 	}
+      // actual cost of this move
+      realCost = realCost + G(city[current-start].x, city[minNum].x, city[current-start].y, city[minNum].y);
+      funcCost = funcCost + minF;
+
+      fprintf(stdout, "Admissble Check: H=%d, H*=%d, minF=%d\n", 
+	      H(city[current-start].x, city[current-start].y,
+		city[minNum].x, city[minNum].y,
+		city[end-start].x, city[end-start].y),
+	      G(city[current-start].x, city[current-start].y,
+		city[end-start].x, city[end-start].y),
+	      minF);
+
       current = city[minNum].label;
       numVisit++;
       neighbor[minNum] = 1;
+
       fprintf(stdout, "%c ", current);
     }
+
+  fprintf(stdout, " Actual Cost = %d\n", realCost);
+  for(int i=0;i<length;i++){fprintf(stdout, "%d ", neighbor[i]);}
   fprintf(stdout, "\n");
 }
 
