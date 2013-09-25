@@ -34,41 +34,49 @@ void AStar(City * city, unsigned int length, char start, char end)
   initH = G(Cx, city[j].x, Cy, city[j].y);
   
   char current = start; // current step
-  do
+  unsigned int numVisit = 0;
+  unsigned int *neighbor = (unsigned int *)malloc(length * sizeof(unsigned int));
+  for(int i=0;i<length;++i)
     {
-	  unsigned int currentX = 0, currentY = 0, currentNum = 0;
-	  unsigned int minF = 65536, minNum = 0;
-	  char minNode;
-	  unsigned int i=0;
-	  while(i<length && city[i].label != current){++i;}
-	  
-	  currentX = city[i].x;
-	  currentY = city[i].y;
-	  currentNum = i;
-	  
-	  for(i=0;i<length;++i)
+      if(i == current - 'A') neighbor[i] = 1;
+      else neighbor[i] = 0;
+    }
+
+  fprintf(stdout, "%c ", start);
+  while(numVisit < length)
+    {
+      unsigned int i = 0, minF = -1, minNum = 0;
+      for(i=0; i< length; ++i)
+	{
+	  // possible nodes in between start and end
+	  if(neighbor[i] == 1)
 	    {
-	      // current node
-	      if(currentNum == i)
+	      continue;
+	    }
+	  else if(neighbor[i] == 0)
+	    {
+	      unsigned int tempF = F(city[current - 'A'].x, city[i].x, city[current - 'A'].y, city[i].y);
+	      if(minF == -1)
 		{
-		  continue;
+		  minF = tempF;
+		  minNum = i;
 		}
 	      else
 		{
-		  unsigned int tempF = F(currentX, city[i].x, currentY, city[i].y);
-		  if(tempF < minF)
+		  if(minF > tempF)
 		    {
 		      minF = tempF;
-		      minNode = city[i].label;
 		      minNum = i;
 		    }
 		}
 	    }
-
-	  current = minNode;
-	  fprintf(stdout, "%c F=%d\n", current, minF);
-
-    }while(current != end);
+	}
+      current = city[minNum].label;
+      numVisit++;
+      neighbor[minNum] = 1;
+      fprintf(stdout, "%c ", current);
+    }
+  fprintf(stdout, "\n");
 }
 
 void LocalSearch(City * city, unsigned int length, char start, char end)

@@ -19,9 +19,7 @@ unsigned int numCity = -1; // number of cities
 /**
    Center of gravity of all the points. For herustic function
  **/
-#define Cx 0
-#define Cy 0
-
+unsigned int Cx = 0, Cy = 0;
 
 /**
    Euclidean distance
