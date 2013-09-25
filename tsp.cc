@@ -1,11 +1,49 @@
 #include "tsp.h"
 
-void AStar(City * city, char start, char end)
+void AStar(City * city, unsigned int length, char start, char end)
+{
+  char current = start; // current step
+  do
+    {
+	  unsigned int currentX = 0, currentY = 0, currentNum = 0;
+	  unsigned int minF = 65536, minNum = 0;
+	  char minNode;
+	  unsigned int i=0;
+	  while(i<length && city[i].label != current){++i;}
+	  
+	  currentX = city[i].x;
+	  currentY = city[i].y;
+	  currentNum = i;
+	  
+	  for(i=0;i<length;++i)
+	    {
+	      // current node
+	      if(currentNum == i)
+		{
+		  continue;
+		}
+	      else
+		{
+		  unsigned int tempF = F(currentX, city[i].x, currentY, city[i].y);
+		  if(tempF < minF)
+		    {
+		      minF = tempF;
+		      minNode = city[i].label;
+		      minNum = i;
+		    }
+		}
+	    }
+
+	  current = minNode;
+	  fprintf(stdout, "%c F=%d\n", current, minF);
+
+    }while(current != end);
+}
+
+void LocalSearch(City * city, unsigned int length, char start, char end)
 {
   
 }
-
-void LocalSearch(City * city, char start, char end){}
 
 int main(int argc, char* argv[]){
   /**
@@ -95,16 +133,17 @@ int main(int argc, char* argv[]){
    **/
   if(algm == ASTAR)
     {
-      TSP(AStar, cities, 'A', 'A');
+      // run A* algorithm
+      TSP(AStar, cities, numCity, 'A', 'A');
     }
   else if(algm == LOCALSEARCH)
     {
-      TSP(LocalSearch, cities, 'A', 'A');
+      // run local search
+      TSP(LocalSearch, cities, numCity, 'A', 'A');
     }
   else
     {
       fprintf(stderr, "What in the world are you running?\n");
-      exit(3);
     }
 
   return 0;

@@ -1,3 +1,7 @@
+#ifndef TSP_H
+#define TSP_H
+#endif
+
 #include <fstream>
 #include <sstream>
 #include <cmath>
@@ -15,6 +19,7 @@ unsigned int numCity = -1; // number of cities
 // For herustic function
 #define Ax 0
 #define Ay 0
+
 
 /**
    Euclidean distance
@@ -46,25 +51,31 @@ struct City
 };
 
 /**
+   Brute Force Search
+ **/
+extern void bruteForce(City * city, unsigned int length, char start, char end);
+
+/**
    A* Algorithm
  **/
-extern void AStar(City * city, char start, char end);
+extern void AStar(City * city, unsigned int length, char start, char end);
 
 /**   
    Local Search function
  **/
-extern void LocalSearch(City * city, char start, char end);
+extern void LocalSearch(City * city, unsigned int length, char start, char end);
 
 
 /**
    TSP API
  **/
-extern void TSP(void (*algm)(City *, char, char), City * city, char start, char end)
+extern void TSP(void (*algm)(City *, unsigned int, char, char), 
+		City * city, unsigned int length, char start, char end)
 {
   if(!(algm == &AStar || algm == &LocalSearch))
     {
       fprintf(stderr, "Algorithm not defined\n");
     }
-  else (*algm)(city, start, end);
+  else (*algm)(city, length, start, end);
 }
 
