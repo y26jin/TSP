@@ -60,24 +60,24 @@ struct City
 /**
    A* Algorithm
  **/
-extern void AStar(City * city, unsigned int length, char start, char end);
+extern void AStar(City * city, unsigned int length);
 
 /**   
    Local Search function
  **/
-extern void LocalSearch(City * city, unsigned int length, char start, char end);
+extern void LocalSearch(City * city, unsigned int length);
 
 
 /**
    TSP API
  **/
-extern void TSP(void (*algm)(City *, unsigned int, char, char), 
-		City * city, unsigned int length, char start, char end)
+extern void TSP(void (*algm)(City *, unsigned int), 
+		City * city, unsigned int length)
 {
   if(!(algm == &AStar || algm == &LocalSearch))
     {
       fprintf(stderr, "Algorithm not defined\n");
     }
-  else (*algm)(city, length, start, end);
+  else (*algm)(city, length);
 }
 
