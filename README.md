@@ -3,8 +3,6 @@ TSP
 
 Travelling salesman problem(Well-known).
 
-There are two algorithms to tackle TSP down:
-1. A* Algorithm
-2. Local Search
-
-(Will update when completing a milestone or so)
+Took a stab on A* algorithm. 
+I would prefer simply using MST to resolve it.
+If you have an Euclidean MST, you are getting Euclidean TSP easy breezy.
